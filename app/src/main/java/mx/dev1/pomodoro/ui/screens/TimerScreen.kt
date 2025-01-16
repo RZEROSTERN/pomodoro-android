@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -24,6 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import mx.dev1.pomodoro.ui.components.CircularProgressBar
+import mx.dev1.pomodoro.ui.components.TaskCard
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,6 +39,14 @@ fun TimerScreen() {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
+                TaskCard(
+                    title = "Mobile app design",
+                    completedSessions = 4,
+                    totalSessions = 6,
+                    totalTime = "150 minute",
+                    sessionTime = "25 minute",
+                    icon = Icons.Default.Home
+                )
 
                 CircularProgressBar(
                     modifier = Modifier
