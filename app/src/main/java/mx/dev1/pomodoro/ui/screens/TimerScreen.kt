@@ -28,55 +28,49 @@ import mx.dev1.pomodoro.ui.components.CircularProgressBar
 import mx.dev1.pomodoro.ui.components.TaskCard
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TimerScreen() {
-    Scaffold (
-        topBar = { TopAppBar(title = { Text("Pomodoro") }) },
-        content = {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        TaskCard(
+            title = "Mobile app design",
+            completedSessions = 4,
+            totalSessions = 6,
+            totalTime = "150 minute",
+            sessionTime = "25 minute",
+            icon = Icons.Default.Home
+        )
+
+        CircularProgressBar(
+            modifier = Modifier
+                .size(400.dp),
+            initialValue = 50,
+            primaryColor = Color.Green,
+            secondaryColor = Color.LightGray,
+            circleRadius = 320f,
+            onPositionChange = {},
+            sessions = "1 of 6 sessions"
+        )
+
+        Text("Take a break!")
+        Spacer(modifier = Modifier.height(16.dp))
+        Row {
+            Button(
+                onClick = { /* Lógica para iniciar */ },
+                modifier = Modifier.size(64.dp),
+                contentPadding = PaddingValues(1.dp)
             ) {
-                TaskCard(
-                    title = "Mobile app design",
-                    completedSessions = 4,
-                    totalSessions = 6,
-                    totalTime = "150 minute",
-                    sessionTime = "25 minute",
-                    icon = Icons.Default.Home
+                Icon(
+                    imageVector = Icons.Default.PlayArrow,
+                    contentDescription = "Start",
+                    modifier = Modifier.size(32.dp)
                 )
-
-                CircularProgressBar(
-                    modifier = Modifier
-                        .size(400.dp),
-                    initialValue = 50,
-                    primaryColor = Color.Green,
-                    secondaryColor = Color.LightGray,
-                    circleRadius = 320f,
-                    onPositionChange = {},
-                    sessions = "1 of 6 sessions"
-                )
-
-                Text("Take a break!")
-                Spacer(modifier = Modifier.height(16.dp))
-                Row {
-                    Button(
-                        onClick = { /* Lógica para iniciar */ },
-                        modifier = Modifier.size(64.dp),
-                        contentPadding = PaddingValues(1.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.PlayArrow,
-                            contentDescription = "Start",
-                            modifier = Modifier.size(32.dp)
-                        )
-                    }
-                }
             }
         }
-    )
+    }
 }
 
 @Preview

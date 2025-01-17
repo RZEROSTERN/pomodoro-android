@@ -133,7 +133,7 @@ fun CircularProgressBar(
             drawContext.canvas.nativeCanvas.apply {
                 drawIntoCanvas {
                     drawText(
-                        "$sessions",
+                        sessions,
                         circleCenter.x,
                         circleCenter.y - 80.dp.toPx() / 3f,
                         Paint().apply {

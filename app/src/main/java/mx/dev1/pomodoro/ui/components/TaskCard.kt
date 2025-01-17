@@ -72,7 +72,7 @@ fun TaskCard(
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "$completedSessions/$totalSessions sessions",
+                    text = totalTime,
                     style = MaterialTheme.typography.bodySmall.copy(color = Color.Gray)
                 )
             }
@@ -81,7 +81,7 @@ fun TaskCard(
 
             Column(horizontalAlignment = Alignment.End) {
                 Text(
-                    text = totalTime,
+                    text = "$completedSessions/$totalSessions",
                     style = MaterialTheme.typography.bodySmall.copy(color = Color.Black)
                 )
                 Spacer(modifier = Modifier.height(4.dp))
@@ -101,8 +101,8 @@ fun PreviewTaskCard() {
         title = "Mobile app design",
         completedSessions = 4,
         totalSessions = 6,
-        totalTime = "150 minute",
-        sessionTime = "25 minute",
+        totalTime = "150 minutes",
+        sessionTime = "25 minutes",
         icon = Icons.Default.Home
     )
 }
