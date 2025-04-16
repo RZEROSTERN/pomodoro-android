@@ -49,116 +49,114 @@ fun CircularProgressBar(
         mutableIntStateOf(initialValue)
     }
 
+    Canvas(
+        modifier = modifier
+    ) {
+        val width = size.width
+        val height = size.height
+        val circleThickness = width / 30f
+        circleCenter = Offset(x = width / 2f, y = height / 2f)
+        val outerRadius = circleRadius + circleThickness / 2f
+        val gap = 16f
 
-        Canvas(
-            modifier = modifier
-        ) {
-            val width = size.width
-            val height = size.height
-            val circleThickness = width / 30f
-            circleCenter = Offset(x = width / 2f, y = height / 2f)
-            val outerRadius = circleRadius + circleThickness / 2f
-            val gap = 16f
+        drawCircle(
+            brush = Brush.radialGradient(
+                listOf(
+                    primaryColor.copy(0.45f),
+                    secondaryColor.copy(0.15f)
+                )
+            ),
+            radius = circleRadius,
+            center = circleCenter
+        )
 
-            drawCircle(
-                brush = Brush.radialGradient(
-                    listOf(
-                        primaryColor.copy(0.45f),
-                        secondaryColor.copy(0.15f)
-                    )
-                ),
-                radius = circleRadius,
-                center = circleCenter
+        drawCircle(
+            style = Stroke(
+                width = circleThickness,
+            ),
+            color = secondaryColor,
+            radius = circleRadius,
+            center = circleCenter
+        )
+
+        drawArc(
+            color = primaryColor,
+            startAngle = 90f,
+            sweepAngle = (360f / maxValue) * positionValue.toFloat(),
+            useCenter = false,
+            style = Stroke(
+                width = circleThickness,
+                cap = StrokeCap.Round
+            ),
+            size = Size(
+                width = circleRadius * 2f,
+                height = circleRadius * 2f
+            ),
+            topLeft = Offset(
+                (width - circleRadius * 2f) / 2f,
+                (height - circleRadius * 2f) / 2f
+            )
+        )
+
+        for(i in 0 .. (maxValue - minValue)) {
+            val color = if(i < positionValue - minValue) primaryColor else primaryColor.copy(alpha = 0.3f)
+            val angleInDegrees = i * 360 / (maxValue - minValue).toFloat()
+            val angleInRadians = angleInDegrees * (Math.PI / 180f) + Math.PI / 2f
+
+            val yGapAdjustment = cos(angleInDegrees * Math.PI / 180f) * gap
+            val xGapAdjustment = -sin(angleInDegrees * Math.PI / 180f) * gap
+
+            val start = Offset(
+                x = (outerRadius * cos(angleInRadians) + circleCenter.x + xGapAdjustment).toFloat(),
+                y = (outerRadius * sin(angleInRadians) + circleCenter.y + yGapAdjustment).toFloat()
             )
 
-            drawCircle(
-                style = Stroke(
-                    width = circleThickness,
-                ),
-                color = secondaryColor,
-                radius = circleRadius,
-                center = circleCenter
+            val end = Offset(
+                x = (outerRadius * cos(angleInRadians) + circleCenter.x + xGapAdjustment).toFloat(),
+                y = (outerRadius * sin(angleInRadians) + circleThickness + circleCenter.y + yGapAdjustment).toFloat()
             )
 
-            drawArc(
-                color = primaryColor,
-                startAngle = 90f,
-                sweepAngle = (360f / maxValue) * positionValue.toFloat(),
-                useCenter = false,
-                style = Stroke(
-                    width = circleThickness,
-                    cap = StrokeCap.Round
-                ),
-                size = Size(
-                    width = circleRadius * 2f,
-                    height = circleRadius * 2f
-                ),
-                topLeft = Offset(
-                    (width - circleRadius * 2f) / 2f,
-                    (height - circleRadius * 2f) / 2f
+            rotate(
+                angleInDegrees,
+                pivot = start
+            ) {
+                drawLine(
+                    color = color,
+                    start = start,
+                    end = end,
+                    strokeWidth = 1.dp.toPx()
                 )
-            )
-
-            for(i in 0 .. (maxValue - minValue)) {
-                val color = if(i < positionValue - minValue) primaryColor else primaryColor.copy(alpha = 0.3f)
-                val angleInDegrees = i * 360 / (maxValue - minValue).toFloat()
-                val angleInRadians = angleInDegrees * (Math.PI / 180f) + Math.PI / 2f
-
-                val yGapAdjustment = cos(angleInDegrees * Math.PI / 180f) * gap
-                val xGapAdjustment = -sin(angleInDegrees * Math.PI / 180f) * gap
-
-                val start = Offset(
-                    x = (outerRadius * cos(angleInRadians) + circleCenter.x + xGapAdjustment).toFloat(),
-                    y = (outerRadius * sin(angleInRadians) + circleCenter.y + yGapAdjustment).toFloat()
-                )
-
-                val end = Offset(
-                    x = (outerRadius * cos(angleInRadians) + circleCenter.x + xGapAdjustment).toFloat(),
-                    y = (outerRadius * sin(angleInRadians) + circleThickness + circleCenter.y + yGapAdjustment).toFloat()
-                )
-
-                rotate(
-                    angleInDegrees,
-                    pivot = start
-                ) {
-                    drawLine(
-                        color = color,
-                        start = start,
-                        end = end,
-                        strokeWidth = 1.dp.toPx()
-                    )
-                }
-            }
-
-            drawContext.canvas.nativeCanvas.apply {
-                drawIntoCanvas {
-                    drawText(
-                        sessions,
-                        circleCenter.x,
-                        circleCenter.y - 80.dp.toPx() / 3f,
-                        Paint().apply {
-                            textSize = 13.sp.toPx()
-                            textAlign = Paint.Align.CENTER
-                            color = Color.DarkGray.toArgb()
-                            isFakeBoldText = true
-                        }
-                    )
-
-                    drawText(
-                        "24:59",
-                        circleCenter.x,
-                        circleCenter.y + 64.dp.toPx() / 3f,
-                        Paint().apply {
-                            textSize = 42.sp.toPx()
-                            textAlign = Paint.Align.CENTER
-                            color = Color.DarkGray.toArgb()
-                            isFakeBoldText = true
-                        }
-                    )
-                }
             }
         }
 
+        drawContext.canvas.nativeCanvas.apply {
+            drawIntoCanvas {
+                drawText(
+                    sessions,
+                    circleCenter.x,
+                    circleCenter.y - 80.dp.toPx() / 3f,
+                    Paint().apply {
+                        textSize = 13.sp.toPx()
+                        textAlign = Paint.Align.CENTER
+                        color = Color.DarkGray.toArgb()
+                        isFakeBoldText = true
+                    }
+                )
+
+                drawText(
+                    "24:59",
+                    circleCenter.x,
+                    circleCenter.y + 64.dp.toPx() / 3f,
+                    Paint().apply {
+                        textSize = 42.sp.toPx()
+                        textAlign = Paint.Align.CENTER
+                        color = Color.DarkGray.toArgb()
+                        isFakeBoldText = true
+                    }
+                )
+            }
+        }
+    }
 }
 
 @Composable
