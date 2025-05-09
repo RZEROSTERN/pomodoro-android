@@ -41,8 +41,9 @@ fun TaskCard(
             defaultElevation = 4.dp
         ),
         modifier = Modifier
-            .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp)
+            .fillMaxWidth()
+
     ) {
         Row(
             modifier = Modifier

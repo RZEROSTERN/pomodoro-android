@@ -5,4 +5,5 @@ object Routes {
     val HistoryScreen = "favorites"
     val CalendarScreen = "calendar"
     val MyTrackerScreen = "my_tracker"
+    val TimerScreen = "timer"
 }

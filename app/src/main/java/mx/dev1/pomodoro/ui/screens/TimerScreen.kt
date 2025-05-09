@@ -1,6 +1,7 @@
 package mx.dev1.pomodoro.ui.screens
 
 import android.annotation.SuppressLint
+import android.widget.Space
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -31,9 +33,9 @@ import mx.dev1.pomodoro.ui.components.TaskCard
 @Composable
 fun TimerScreen() {
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().padding(top = 96.dp, bottom = 64.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Top
     ) {
         TaskCard(
             title = "Mobile app design",
@@ -44,19 +46,24 @@ fun TimerScreen() {
             icon = Icons.Default.Home
         )
 
+        Spacer(modifier = Modifier.height(16.dp))
+
         CircularProgressBar(
-            modifier = Modifier
-                .size(400.dp),
+            modifier = Modifier.size(320.dp),
             initialValue = 50,
             primaryColor = Color.Green,
             secondaryColor = Color.LightGray,
-            circleRadius = 320f,
+            circleRadius = 240f,
             onPositionChange = {},
             sessions = "1 of 6 sessions"
         )
 
-        Text("Take a break!")
         Spacer(modifier = Modifier.height(16.dp))
+
+        Text("Take a break!")
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         Row {
             Button(
                 onClick = { /* Lógica para iniciar */ },

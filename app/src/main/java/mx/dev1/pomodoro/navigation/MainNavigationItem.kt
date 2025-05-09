@@ -6,5 +6,6 @@ data class MainNavigationItem(
     val title: String,
     val route: String,
     val selectedIcon: ImageVector,
-    val unselectedIcon: ImageVector
+    val unselectedIcon: ImageVector,
+    val isVisibleOnBottomBar: Boolean = true
 )
