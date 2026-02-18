@@ -13,7 +13,7 @@ import androidx.compose.material.icons.outlined.Info
 object NavigationItems {
     val list = listOf(
         MainNavigationItem(
-            title = "Home",
+            title = "Tasks",
             route = Routes.HomeScreen,
             selectedIcon = Icons.Filled.Home,
             unselectedIcon = Icons.Outlined.Home
