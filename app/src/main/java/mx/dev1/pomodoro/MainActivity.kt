@@ -43,6 +43,7 @@ import androidx.navigation.compose.rememberNavController
 import mx.dev1.pomodoro.navigation.MainNavigationBar
 import mx.dev1.pomodoro.navigation.NavigationItems
 import mx.dev1.pomodoro.navigation.Routes
+import mx.dev1.pomodoro.ui.screens.CalendarScreen
 import mx.dev1.pomodoro.ui.screens.MyTrackerScreen
 import mx.dev1.pomodoro.ui.screens.TimerScreen
 import mx.dev1.pomodoro.ui.theme.PomodoroTheme
@@ -117,7 +118,9 @@ class MainActivity : ComponentActivity() {
                     ) {
                         composable(Routes.HomeScreen) {}
                         composable(Routes.HistoryScreen) {}
-                        composable(Routes.CalendarScreen) {}
+                        composable(Routes.CalendarScreen) {
+                            CalendarScreen()
+                        }
                         composable(Routes.MyTrackerScreen) {
                             MyTrackerScreen()
                         }

@@ -35,8 +35,10 @@ fun MainNavigationBar(
                     },
                     selected = currentDestination?.route == item.route,
                     onClick = {
-                        navController.navigate(item.route) {
-                            popUpTo(Routes.HomeScreen)
+                        if (currentDestination?.route != item.route) {
+                            navController.navigate(item.route) {
+                                popUpTo(Routes.HomeScreen)
+                            }
                         }
                     },
                     icon = {
