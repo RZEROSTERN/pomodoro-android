@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.absoluteOffset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -73,8 +74,9 @@ class MainActivity : ComponentActivity() {
                         }
                     },
                     floatingActionButtonPosition = FabPosition.Center
-                ) { _ ->
+                ) { innerPadding ->
                     NavHost(
+                        modifier = Modifier.padding(innerPadding),
                         navController = navController,
                         startDestination = Routes.MyTrackerScreen,
                     ) {

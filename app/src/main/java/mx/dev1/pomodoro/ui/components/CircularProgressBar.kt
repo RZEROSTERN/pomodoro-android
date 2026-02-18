@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -41,6 +42,9 @@ fun CircularProgressBar(
     sessions: String,
     onPositionChange: (Int) -> Unit
 ) {
+    val labelTextColor = MaterialTheme.colorScheme.onSurfaceVariant
+    val timerTextColor = MaterialTheme.colorScheme.onSurface
+
     var circleCenter by remember {
         mutableStateOf(Offset.Zero)
     }
@@ -138,7 +142,7 @@ fun CircularProgressBar(
                     Paint().apply {
                         textSize = 13.sp.toPx()
                         textAlign = Paint.Align.CENTER
-                        color = Color.DarkGray.toArgb()
+                        color = labelTextColor.toArgb()
                         isFakeBoldText = true
                     }
                 )
@@ -150,7 +154,7 @@ fun CircularProgressBar(
                     Paint().apply {
                         textSize = 42.sp.toPx()
                         textAlign = Paint.Align.CENTER
-                        color = Color.DarkGray.toArgb()
+                        color = timerTextColor.toArgb()
                         isFakeBoldText = true
                     }
                 )

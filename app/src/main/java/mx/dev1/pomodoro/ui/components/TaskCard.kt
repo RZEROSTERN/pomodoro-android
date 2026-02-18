@@ -35,6 +35,10 @@ fun TaskCard(
     sessionTime: String,
     icon: ImageVector
 ) {
+    val titleColor = MaterialTheme.colorScheme.onSurface
+    val supportingTextColor = MaterialTheme.colorScheme.onSurfaceVariant
+    val progressTextColor = MaterialTheme.colorScheme.onSurface
+
     Card(
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(
@@ -69,12 +73,15 @@ fun TaskCard(
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = title,
-                    style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold)
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        fontWeight = FontWeight.Bold,
+                        color = titleColor
+                    )
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = totalTime,
-                    style = MaterialTheme.typography.bodySmall.copy(color = Color.Gray)
+                    style = MaterialTheme.typography.bodySmall.copy(color = supportingTextColor)
                 )
             }
 
@@ -83,12 +90,12 @@ fun TaskCard(
             Column(horizontalAlignment = Alignment.End) {
                 Text(
                     text = "$completedSessions/$totalSessions",
-                    style = MaterialTheme.typography.bodySmall.copy(color = Color.Black)
+                    style = MaterialTheme.typography.bodySmall.copy(color = progressTextColor)
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = sessionTime,
-                    style = MaterialTheme.typography.bodySmall.copy(color = Color.Gray)
+                    style = MaterialTheme.typography.bodySmall.copy(color = supportingTextColor)
                 )
             }
         }
