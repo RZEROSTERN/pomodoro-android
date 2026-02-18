@@ -44,6 +44,7 @@ import mx.dev1.pomodoro.navigation.MainNavigationBar
 import mx.dev1.pomodoro.navigation.NavigationItems
 import mx.dev1.pomodoro.navigation.Routes
 import mx.dev1.pomodoro.ui.screens.CalendarScreen
+import mx.dev1.pomodoro.ui.screens.HistoryScreen
 import mx.dev1.pomodoro.ui.screens.MyTrackerScreen
 import mx.dev1.pomodoro.ui.screens.TasksScreen
 import mx.dev1.pomodoro.ui.screens.TimerScreen
@@ -120,7 +121,9 @@ class MainActivity : ComponentActivity() {
                         composable(Routes.HomeScreen) {
                             TasksScreen()
                         }
-                        composable(Routes.HistoryScreen) {}
+                        composable(Routes.HistoryScreen) {
+                            HistoryScreen()
+                        }
                         composable(Routes.CalendarScreen) {
                             CalendarScreen()
                         }
