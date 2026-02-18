@@ -15,11 +15,11 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import mx.dev1.pomodoro.ui.components.CircularProgressBar
@@ -49,8 +49,8 @@ fun TimerScreen() {
         CircularProgressBar(
             modifier = Modifier.size(320.dp),
             initialValue = 50,
-            primaryColor = Color.Green,
-            secondaryColor = Color.LightGray,
+            primaryColor = MaterialTheme.colorScheme.primary,
+            secondaryColor = MaterialTheme.colorScheme.surfaceVariant,
             circleRadius = 240f,
             onPositionChange = {},
             sessions = "1 of 6 sessions"

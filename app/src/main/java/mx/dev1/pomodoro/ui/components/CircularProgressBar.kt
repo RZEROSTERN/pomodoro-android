@@ -2,7 +2,6 @@ package mx.dev1.pomodoro.ui.components
 
 import android.graphics.Paint
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -22,9 +21,14 @@ import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.semantics.ProgressBarRangeInfo
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.progressBarRangeInfo
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import mx.dev1.pomodoro.ui.theme.PomodoroTheme
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -52,7 +56,13 @@ fun CircularProgressBar(
     }
 
     Canvas(
-        modifier = modifier
+        modifier = modifier.semantics {
+            contentDescription = "Pomodoro timer. Progress $sessions. Remaining time 24 minutes 59 seconds."
+            progressBarRangeInfo = ProgressBarRangeInfo(
+                current = positionValue.toFloat(),
+                range = minValue.toFloat()..maxValue.toFloat()
+            )
+        }
     ) {
         val width = size.width
         val height = size.height
@@ -164,15 +174,16 @@ fun CircularProgressBar(
 @Composable
 @Preview
 fun CircularProgressBarPreview() {
-    CircularProgressBar(
-        modifier = Modifier
-            .size(250.dp)
-            .background(Color.White),
-        initialValue = 100,
-        primaryColor = Color.Green,
-        secondaryColor = Color.Gray,
-        circleRadius = 230f,
-        onPositionChange = {},
-        sessions = "1 of 6 sessions"
-    )
+    PomodoroTheme {
+        CircularProgressBar(
+            modifier = Modifier
+                .size(250.dp),
+            initialValue = 100,
+            primaryColor = MaterialTheme.colorScheme.primary,
+            secondaryColor = MaterialTheme.colorScheme.surfaceVariant,
+            circleRadius = 230f,
+            onPositionChange = {},
+            sessions = "1 of 6 sessions"
+        )
+    }
 }
