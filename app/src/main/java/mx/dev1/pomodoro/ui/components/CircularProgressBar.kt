@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -32,35 +31,29 @@ import mx.dev1.pomodoro.ui.theme.PomodoroTheme
 import kotlin.math.cos
 import kotlin.math.sin
 
+private const val DOT_COUNT = 100
+
 @Composable
 fun CircularProgressBar(
     modifier: Modifier = Modifier,
-    initialValue: Int,
+    progress: Float,            // 0f (empty) → 1f (full)
     primaryColor: Color,
     secondaryColor: Color,
-    minValue: Int = 0,
-    maxValue: Int = 100,
     circleRadius: Float,
     sessions: String,
-    onPositionChange: (Int) -> Unit
+    timeText: String
 ) {
     val labelTextColor = MaterialTheme.colorScheme.onSurfaceVariant
     val timerTextColor = MaterialTheme.colorScheme.onSurface
 
-    var circleCenter by remember {
-        mutableStateOf(Offset.Zero)
-    }
-
-    var positionValue by remember {
-        mutableIntStateOf(initialValue)
-    }
+    var circleCenter by remember { mutableStateOf(Offset.Zero) }
 
     Canvas(
         modifier = modifier.semantics {
-            contentDescription = "Pomodoro timer. Progress $sessions. Remaining time 24 minutes 59 seconds."
+            contentDescription = "Pomodoro timer. $sessions. Remaining time $timeText."
             progressBarRangeInfo = ProgressBarRangeInfo(
-                current = positionValue.toFloat(),
-                range = minValue.toFloat()..maxValue.toFloat()
+                current = progress,
+                range = 0f..1f
             )
         }
     ) {
@@ -71,10 +64,11 @@ fun CircularProgressBar(
         val outerRadius = circleRadius + circleThickness / 2f
         val gap = 16f
 
+        // Background fill
         drawCircle(
             brush = Brush.radialGradient(
                 listOf(
-                    primaryColor.copy(0.45f),
+                    primaryColor.copy(if (progress > 0f) 0.45f else 0.15f),
                     secondaryColor.copy(0.15f)
                 )
             ),
@@ -82,37 +76,41 @@ fun CircularProgressBar(
             center = circleCenter
         )
 
+        // Track arc (secondary)
         drawCircle(
-            style = Stroke(
-                width = circleThickness,
-            ),
+            style = Stroke(width = circleThickness),
             color = secondaryColor,
             radius = circleRadius,
             center = circleCenter
         )
 
-        drawArc(
-            color = primaryColor,
-            startAngle = 90f,
-            sweepAngle = (360f / maxValue) * positionValue.toFloat(),
-            useCenter = false,
-            style = Stroke(
-                width = circleThickness,
-                cap = StrokeCap.Round
-            ),
-            size = Size(
-                width = circleRadius * 2f,
-                height = circleRadius * 2f
-            ),
-            topLeft = Offset(
-                (width - circleRadius * 2f) / 2f,
-                (height - circleRadius * 2f) / 2f
+        // Progress arc (primary)
+        if (progress > 0f) {
+            drawArc(
+                color = primaryColor,
+                startAngle = 90f,
+                sweepAngle = 360f * progress,
+                useCenter = false,
+                style = Stroke(
+                    width = circleThickness,
+                    cap = StrokeCap.Round
+                ),
+                size = Size(
+                    width = circleRadius * 2f,
+                    height = circleRadius * 2f
+                ),
+                topLeft = Offset(
+                    (width - circleRadius * 2f) / 2f,
+                    (height - circleRadius * 2f) / 2f
+                )
             )
-        )
+        }
 
-        for(i in 0 .. (maxValue - minValue)) {
-            val color = if(i < positionValue - minValue) primaryColor else primaryColor.copy(alpha = 0.3f)
-            val angleInDegrees = i * 360 / (maxValue - minValue).toFloat()
+        // Tick marks
+        for (i in 0..DOT_COUNT) {
+            val filled = i.toFloat() / DOT_COUNT < progress
+            val color = if (filled) primaryColor else primaryColor.copy(alpha = 0.3f)
+            val angleInDegrees = i * 360f / DOT_COUNT
             val angleInRadians = angleInDegrees * (Math.PI / 180f) + Math.PI / 2f
 
             val yGapAdjustment = cos(angleInDegrees * Math.PI / 180f) * gap
@@ -122,16 +120,12 @@ fun CircularProgressBar(
                 x = (outerRadius * cos(angleInRadians) + circleCenter.x + xGapAdjustment).toFloat(),
                 y = (outerRadius * sin(angleInRadians) + circleCenter.y + yGapAdjustment).toFloat()
             )
-
             val end = Offset(
-                x = (outerRadius * cos(angleInRadians) + circleCenter.x + xGapAdjustment).toFloat(),
+                x = start.x,
                 y = (outerRadius * sin(angleInRadians) + circleThickness + circleCenter.y + yGapAdjustment).toFloat()
             )
 
-            rotate(
-                angleInDegrees,
-                pivot = start
-            ) {
+            rotate(angleInDegrees, pivot = start) {
                 drawLine(
                     color = color,
                     start = start,
@@ -141,6 +135,7 @@ fun CircularProgressBar(
             }
         }
 
+        // Text labels
         drawContext.canvas.nativeCanvas.apply {
             drawIntoCanvas {
                 drawText(
@@ -154,9 +149,8 @@ fun CircularProgressBar(
                         isFakeBoldText = true
                     }
                 )
-
                 drawText(
-                    "24:59",
+                    timeText,
                     circleCenter.x,
                     circleCenter.y + 64.dp.toPx() / 3f,
                     Paint().apply {
@@ -176,14 +170,13 @@ fun CircularProgressBar(
 fun CircularProgressBarPreview() {
     PomodoroTheme {
         CircularProgressBar(
-            modifier = Modifier
-                .size(250.dp),
-            initialValue = 100,
+            modifier = Modifier.size(250.dp),
+            progress = 0.4f,
             primaryColor = MaterialTheme.colorScheme.primary,
             secondaryColor = MaterialTheme.colorScheme.surfaceVariant,
             circleRadius = 230f,
-            onPositionChange = {},
-            sessions = "1 of 6 sessions"
+            sessions = "1 of 6 sessions",
+            timeText = "14:59"
         )
     }
 }

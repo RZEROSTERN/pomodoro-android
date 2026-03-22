@@ -30,6 +30,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.FileDownload
 import androidx.compose.material.icons.filled.FileUpload
 import androidx.compose.material.icons.filled.Info
@@ -83,6 +84,7 @@ import mx.dev1.pomodoro.navigation.NavigationItems
 import mx.dev1.pomodoro.navigation.Routes
 import mx.dev1.pomodoro.ui.components.PremiumBadge
 import mx.dev1.pomodoro.ui.screens.AboutScreen
+import mx.dev1.pomodoro.ui.screens.SaveSessionScreen
 import mx.dev1.pomodoro.ui.screens.PremiumScreen
 import mx.dev1.pomodoro.ui.screens.CalendarScreen
 import mx.dev1.pomodoro.ui.screens.ExportDataScreen
@@ -124,6 +126,7 @@ class MainActivity : ComponentActivity() {
                     Routes.ImportDataScreen -> "Import Data"
                     Routes.AboutScreen -> "About"
                     Routes.PremiumScreen -> "Go Premium"
+                    Routes.SaveSessionScreen -> "Save Session"
                     else -> null
                 }
                 val isAuthScreen = currentDestination?.route == Routes.LoginScreen ||
@@ -229,6 +232,15 @@ class MainActivity : ComponentActivity() {
                                     }
                                 )
                                 NavigationDrawerItem(
+                                    icon = { Icon(Icons.Default.Bookmark, contentDescription = null) },
+                                    label = { Text("Save Session") },
+                                    selected = currentDestination?.route == Routes.SaveSessionScreen,
+                                    onClick = {
+                                        scope.launch { drawerState.close() }
+                                        navController.navigate(Routes.SaveSessionScreen) { popUpTo(Routes.HomeScreen) }
+                                    }
+                                )
+                                NavigationDrawerItem(
                                     icon = { Icon(Icons.Default.Info, contentDescription = null) },
                                     label = { Text("About") },
                                     selected = currentDestination?.route == Routes.AboutScreen,
@@ -244,7 +256,10 @@ class MainActivity : ComponentActivity() {
                                         scope.launch { drawerState.close() }
                                         navController.navigate(Routes.PremiumScreen) { popUpTo(Routes.HomeScreen) }
                                     },
-                                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = 12.dp)
+                                        .padding(bottom = 8.dp),
                                     colors = androidx.compose.material3.CardDefaults.cardColors(
                                         containerColor = MaterialTheme.colorScheme.tertiaryContainer
                                     )
@@ -254,7 +269,7 @@ class MainActivity : ComponentActivity() {
                                         verticalAlignment = Alignment.CenterVertically,
                                         horizontalArrangement = Arrangement.spacedBy(12.dp)
                                     ) {
-                                        Icon(Icons.Default.Star, contentDescription = null, tint = MaterialTheme.colorScheme.tertiary, modifier = Modifier.size(20.dp))
+                                        Icon(Icons.Default.Star, contentDescription = null, tint = MaterialTheme.colorScheme.onTertiaryContainer, modifier = Modifier.size(20.dp))
                                         Column {
                                             Text("Go Premium", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onTertiaryContainer)
                                             Text("Unlock all features", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onTertiaryContainer)
@@ -373,7 +388,11 @@ class MainActivity : ComponentActivity() {
                                 })
                             }
                             composable(Routes.TimerScreen) {
-                                TimerScreen()
+                                TimerScreen(
+                                    onSaveSession = {
+                                        navController.navigate(Routes.SaveSessionScreen)
+                                    }
+                                )
                             }
                             composable(Routes.SettingsScreen) {
                                 SettingsScreen()
@@ -397,6 +416,16 @@ class MainActivity : ComponentActivity() {
                                 ImportDataScreen(onNavigateToPremium = {
                                     navController.navigate(Routes.PremiumScreen) { popUpTo(Routes.HomeScreen) }
                                 })
+                            }
+                            composable(Routes.SaveSessionScreen) {
+                                SaveSessionScreen(
+                                    onNavigateToLogin = {
+                                        navController.navigate(Routes.LoginScreen) { popUpTo(Routes.HomeScreen) }
+                                    },
+                                    onNavigateToPremium = {
+                                        navController.navigate(Routes.PremiumScreen) { popUpTo(Routes.HomeScreen) }
+                                    }
+                                )
                             }
                             composable(Routes.AboutScreen) {
                                 AboutScreen()

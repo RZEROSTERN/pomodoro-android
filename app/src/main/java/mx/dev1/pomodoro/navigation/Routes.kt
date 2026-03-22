@@ -15,4 +15,5 @@ object Routes {
     val LoginScreen = "login"
     val RegisterScreen = "register"
     val PremiumScreen = "premium"
+    val SaveSessionScreen = "save_session"
 }
