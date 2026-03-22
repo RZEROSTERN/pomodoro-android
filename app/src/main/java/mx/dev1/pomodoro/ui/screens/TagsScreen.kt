@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import mx.dev1.pomodoro.ui.components.PremiumGate
 import mx.dev1.pomodoro.ui.theme.PomodoroTheme
 
 private data class Tag(val id: String, val name: String, val color: Color)
@@ -46,7 +47,12 @@ private val defaultTags = listOf(
 )
 
 @Composable
-fun TagsScreen() {
+fun TagsScreen(onNavigateToPremium: () -> Unit = {}) {
+    PremiumGate(
+        title = "Tags & Categories",
+        description = "Organize your tasks by project, subject, or any label you define. Available in Premium.",
+        onUpgradeClick = onNavigateToPremium
+    ) {
     var tags by rememberSaveable { mutableStateOf(defaultTags) }
 
     Scaffold(
@@ -107,6 +113,7 @@ fun TagsScreen() {
                 }
             }
         }
+    }
     }
 }
 

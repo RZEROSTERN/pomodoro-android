@@ -1,1 +1,10 @@
 /build
+
+# Firebase config — contains API keys, never commit
+google-services.json
+google-services-staging.json
+
+# Signing
+*.keystore
+*.jks
+keystore.properties

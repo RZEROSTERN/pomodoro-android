@@ -16,8 +16,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -31,6 +33,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.FileDownload
 import androidx.compose.material.icons.filled.FileUpload
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.Label
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.NightsStay
@@ -38,6 +41,8 @@ import androidx.compose.material.icons.filled.NotificationsNone
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.WbSunny
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -76,7 +81,9 @@ import kotlinx.coroutines.launch
 import mx.dev1.pomodoro.navigation.MainNavigationBar
 import mx.dev1.pomodoro.navigation.NavigationItems
 import mx.dev1.pomodoro.navigation.Routes
+import mx.dev1.pomodoro.ui.components.PremiumBadge
 import mx.dev1.pomodoro.ui.screens.AboutScreen
+import mx.dev1.pomodoro.ui.screens.PremiumScreen
 import mx.dev1.pomodoro.ui.screens.CalendarScreen
 import mx.dev1.pomodoro.ui.screens.ExportDataScreen
 import mx.dev1.pomodoro.ui.screens.ImportDataScreen
@@ -116,10 +123,12 @@ class MainActivity : ComponentActivity() {
                     Routes.ExportDataScreen -> "Export Data"
                     Routes.ImportDataScreen -> "Import Data"
                     Routes.AboutScreen -> "About"
+                    Routes.PremiumScreen -> "Go Premium"
                     else -> null
                 }
                 val isAuthScreen = currentDestination?.route == Routes.LoginScreen ||
-                                   currentDestination?.route == Routes.RegisterScreen
+                                   currentDestination?.route == Routes.RegisterScreen ||
+                                   currentDestination?.route == Routes.PremiumScreen
 
                 val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
                 val scope = rememberCoroutineScope()
@@ -169,7 +178,11 @@ class MainActivity : ComponentActivity() {
                                 )
                                 NavigationDrawerItem(
                                     icon = { Icon(Icons.Default.Label, contentDescription = null) },
-                                    label = { Text("Tags") },
+                                    label = {
+                                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+                                            Text("Tags"); PremiumBadge()
+                                        }
+                                    },
                                     selected = currentDestination?.route == Routes.TagsScreen,
                                     onClick = {
                                         scope.launch { drawerState.close() }
@@ -178,7 +191,11 @@ class MainActivity : ComponentActivity() {
                                 )
                                 NavigationDrawerItem(
                                     icon = { Icon(Icons.Default.NotificationsNone, contentDescription = null) },
-                                    label = { Text("Notifications") },
+                                    label = {
+                                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+                                            Text("Notifications"); PremiumBadge()
+                                        }
+                                    },
                                     selected = currentDestination?.route == Routes.NotificationsScreen,
                                     onClick = {
                                         scope.launch { drawerState.close() }
@@ -187,7 +204,11 @@ class MainActivity : ComponentActivity() {
                                 )
                                 NavigationDrawerItem(
                                     icon = { Icon(Icons.Default.FileDownload, contentDescription = null) },
-                                    label = { Text("Export Data") },
+                                    label = {
+                                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+                                            Text("Export Data"); PremiumBadge()
+                                        }
+                                    },
                                     selected = currentDestination?.route == Routes.ExportDataScreen,
                                     onClick = {
                                         scope.launch { drawerState.close() }
@@ -196,7 +217,11 @@ class MainActivity : ComponentActivity() {
                                 )
                                 NavigationDrawerItem(
                                     icon = { Icon(Icons.Default.FileUpload, contentDescription = null) },
-                                    label = { Text("Import Data") },
+                                    label = {
+                                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+                                            Text("Import Data"); PremiumBadge()
+                                        }
+                                    },
                                     selected = currentDestination?.route == Routes.ImportDataScreen,
                                     onClick = {
                                         scope.launch { drawerState.close() }
@@ -213,6 +238,29 @@ class MainActivity : ComponentActivity() {
                                     }
                                 )
                                 Spacer(modifier = Modifier.weight(1f))
+                                // Upgrade banner
+                                Card(
+                                    onClick = {
+                                        scope.launch { drawerState.close() }
+                                        navController.navigate(Routes.PremiumScreen) { popUpTo(Routes.HomeScreen) }
+                                    },
+                                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
+                                    colors = androidx.compose.material3.CardDefaults.cardColors(
+                                        containerColor = MaterialTheme.colorScheme.tertiaryContainer
+                                    )
+                                ) {
+                                    Row(
+                                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                                    ) {
+                                        Icon(Icons.Default.Star, contentDescription = null, tint = MaterialTheme.colorScheme.tertiary, modifier = Modifier.size(20.dp))
+                                        Column {
+                                            Text("Go Premium", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onTertiaryContainer)
+                                            Text("Unlock all features", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onTertiaryContainer)
+                                        }
+                                    }
+                                }
                                 HorizontalDivider()
                                 NavigationDrawerItem(
                                     icon = {
@@ -310,13 +358,19 @@ class MainActivity : ComponentActivity() {
                                 TasksScreen()
                             }
                             composable(Routes.HistoryScreen) {
-                                HistoryScreen()
+                                HistoryScreen(onNavigateToPremium = {
+                                    navController.navigate(Routes.PremiumScreen) { popUpTo(Routes.HomeScreen) }
+                                })
                             }
                             composable(Routes.CalendarScreen) {
-                                CalendarScreen()
+                                CalendarScreen(onNavigateToPremium = {
+                                    navController.navigate(Routes.PremiumScreen) { popUpTo(Routes.HomeScreen) }
+                                })
                             }
                             composable(Routes.MyTrackerScreen) {
-                                MyTrackerScreen()
+                                MyTrackerScreen(onNavigateToPremium = {
+                                    navController.navigate(Routes.PremiumScreen) { popUpTo(Routes.HomeScreen) }
+                                })
                             }
                             composable(Routes.TimerScreen) {
                                 TimerScreen()
@@ -325,19 +379,30 @@ class MainActivity : ComponentActivity() {
                                 SettingsScreen()
                             }
                             composable(Routes.TagsScreen) {
-                                TagsScreen()
+                                TagsScreen(onNavigateToPremium = {
+                                    navController.navigate(Routes.PremiumScreen) { popUpTo(Routes.HomeScreen) }
+                                })
                             }
                             composable(Routes.NotificationsScreen) {
-                                NotificationsScreen()
+                                NotificationsScreen(onNavigateToPremium = {
+                                    navController.navigate(Routes.PremiumScreen) { popUpTo(Routes.HomeScreen) }
+                                })
                             }
                             composable(Routes.ExportDataScreen) {
-                                ExportDataScreen()
+                                ExportDataScreen(onNavigateToPremium = {
+                                    navController.navigate(Routes.PremiumScreen) { popUpTo(Routes.HomeScreen) }
+                                })
                             }
                             composable(Routes.ImportDataScreen) {
-                                ImportDataScreen()
+                                ImportDataScreen(onNavigateToPremium = {
+                                    navController.navigate(Routes.PremiumScreen) { popUpTo(Routes.HomeScreen) }
+                                })
                             }
                             composable(Routes.AboutScreen) {
                                 AboutScreen()
+                            }
+                            composable(Routes.PremiumScreen) {
+                                PremiumScreen(onNavigateBack = { navController.popBackStack() })
                             }
                             composable(Routes.LoginScreen) {
                                 LoginScreen(

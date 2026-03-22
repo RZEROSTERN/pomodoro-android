@@ -22,10 +22,16 @@ import mx.dev1.pomodoro.ui.components.CalendarMonthCard
 import mx.dev1.pomodoro.ui.components.CalendarTagChipData
 import mx.dev1.pomodoro.ui.components.CalendarTagChips
 import mx.dev1.pomodoro.ui.components.WeeklyCourseChartCard
+import mx.dev1.pomodoro.ui.components.PremiumGate
 import mx.dev1.pomodoro.ui.theme.PomodoroTheme
 
 @Composable
-fun CalendarScreen() {
+fun CalendarScreen(onNavigateToPremium: () -> Unit = {}) {
+    PremiumGate(
+        title = "Calendar View",
+        description = "Plan your focus sessions by date and visualize your schedule. Available in Premium.",
+        onUpgradeClick = onNavigateToPremium
+    ) {
     var selectedDay by rememberSaveable { mutableIntStateOf(8) }
 
     val calendarIndicators = listOf(
@@ -64,6 +70,7 @@ fun CalendarScreen() {
         CalendarTagChips(chips = chips)
         Spacer(modifier = Modifier.height(4.dp))
         WeeklyCourseChartCard()
+        }
     }
 }
 

@@ -11,10 +11,16 @@ import androidx.compose.ui.unit.dp
 import mx.dev1.pomodoro.ui.components.MyTrackerCategoryRow
 import mx.dev1.pomodoro.ui.components.MyTrackerProgressCard
 import mx.dev1.pomodoro.ui.components.defaultTrackerCategories
+import mx.dev1.pomodoro.ui.components.PremiumGate
 import mx.dev1.pomodoro.ui.theme.PomodoroTheme
 
 @Composable
-fun MyTrackerScreen() {
+fun MyTrackerScreen(onNavigateToPremium: () -> Unit = {}) {
+    PremiumGate(
+        title = "Tracker & Analytics",
+        description = "Dive deep into your productivity stats and patterns over time. Available in Premium.",
+        onUpgradeClick = onNavigateToPremium
+    ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -48,6 +54,7 @@ fun MyTrackerScreen() {
                 style = androidx.compose.material3.MaterialTheme.typography.titleSmall
             )
         }
+    }
     }
 }
 

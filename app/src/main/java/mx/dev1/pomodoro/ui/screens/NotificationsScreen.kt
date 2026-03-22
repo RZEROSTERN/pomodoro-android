@@ -27,16 +27,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import mx.dev1.pomodoro.ui.components.PremiumSectionBanner
 import mx.dev1.pomodoro.ui.theme.PomodoroTheme
 
 @Composable
-fun NotificationsScreen() {
+fun NotificationsScreen(onNavigateToPremium: () -> Unit = {}) {
     var sessionEnd by rememberSaveable { mutableStateOf(true) }
     var breakEnd by rememberSaveable { mutableStateOf(true) }
-    var dailyReminder by rememberSaveable { mutableStateOf(false) }
-    var goalReached by rememberSaveable { mutableStateOf(true) }
-    var motivationalTips by rememberSaveable { mutableStateOf(false) }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -63,34 +60,10 @@ fun NotificationsScreen() {
 
         HorizontalDivider()
 
-        NotificationSectionHeader(
-            icon = { Icon(Icons.Default.NotificationsNone, contentDescription = null, modifier = Modifier.size(20.dp)) },
-            title = "Daily Reminders"
-        )
-        NotificationSwitchRow(
-            label = "Daily start reminder",
-            description = "Remind me to start my first Pomodoro",
-            checked = dailyReminder,
-            onCheckedChange = { dailyReminder = it }
-        )
-        NotificationSwitchRow(
-            label = "Daily goal reached",
-            description = "Celebrate when I hit my daily target",
-            checked = goalReached,
-            onCheckedChange = { goalReached = it }
-        )
-
-        HorizontalDivider()
-
-        NotificationSectionHeader(
-            icon = { Icon(Icons.Default.TipsAndUpdates, contentDescription = null, modifier = Modifier.size(20.dp)) },
-            title = "Tips"
-        )
-        NotificationSwitchRow(
-            label = "Motivational tips",
-            description = "Occasional productivity tips and tricks",
-            checked = motivationalTips,
-            onCheckedChange = { motivationalTips = it }
+        PremiumSectionBanner(
+            title = "Daily Reminders & Tips — Premium",
+            description = "Daily start reminders, goal celebrations, and motivational tips are available in Premium.",
+            onUpgradeClick = onNavigateToPremium
         )
     }
 }

@@ -14,4 +14,5 @@ object Routes {
     val AboutScreen = "about"
     val LoginScreen = "login"
     val RegisterScreen = "register"
+    val PremiumScreen = "premium"
 }

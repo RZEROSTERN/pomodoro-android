@@ -25,10 +25,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import mx.dev1.pomodoro.ui.components.PremiumGate
 import mx.dev1.pomodoro.ui.theme.PomodoroTheme
 
 @Composable
-fun ImportDataScreen() {
+fun ImportDataScreen(onNavigateToPremium: () -> Unit = {}) {
+    PremiumGate(
+        title = "Import Data",
+        description = "Restore your history and tasks from a backup file. Available in Premium.",
+        onUpgradeClick = onNavigateToPremium
+    ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -85,6 +91,7 @@ fun ImportDataScreen() {
                 }
             }
         }
+    }
     }
 }
 

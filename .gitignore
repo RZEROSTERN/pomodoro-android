@@ -1,15 +1,59 @@
+# ============================================================
+# Android / Gradle
+# ============================================================
 *.iml
 .gradle
 /local.properties
+local.properties
+/build
+/captures
+.externalNativeBuild
+.cxx
+
+# ============================================================
+# IntelliJ / Android Studio
+# ============================================================
 /.idea/caches
 /.idea/libraries
 /.idea/modules.xml
 /.idea/workspace.xml
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
+
+# ============================================================
+# macOS
+# ============================================================
 .DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
-local.properties
+**/.DS_Store
+
+# ============================================================
+# Firebase — NEVER commit these files
+# They contain project IDs, API keys, and OAuth client IDs
+# ============================================================
+google-services.json
+google-services-staging.json
+GoogleService-Info.plist
+
+# ============================================================
+# Signing & Keystores — NEVER commit these files
+# ============================================================
+*.keystore
+*.jks
+keystore.properties
+signing.properties
+release-keystore.properties
+
+# ============================================================
+# Secrets & environment files
+# ============================================================
+secrets.properties
+secrets.defaults.properties
+.env
+.env.*
+*.env
+
+# ============================================================
+# API keys (if stored in properties files)
+# ============================================================
+apikeys.properties
+api_keys.properties

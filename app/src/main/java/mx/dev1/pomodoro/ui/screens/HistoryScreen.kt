@@ -22,10 +22,11 @@ import androidx.compose.ui.unit.dp
 import mx.dev1.pomodoro.ui.components.HistorySectionHeader
 import mx.dev1.pomodoro.ui.components.HistoryTaskCard
 import mx.dev1.pomodoro.ui.components.defaultHistorySections
+import mx.dev1.pomodoro.ui.components.PremiumSectionBanner
 import mx.dev1.pomodoro.ui.theme.PomodoroTheme
 
 @Composable
-fun HistoryScreen() {
+fun HistoryScreen(onNavigateToPremium: () -> Unit = {}) {
     val sections = defaultHistorySections()
     val scrollState = rememberScrollState()
     var revealedCardId by rememberSaveable { mutableStateOf<String?>(null) }
@@ -65,6 +66,14 @@ fun HistoryScreen() {
                 Spacer(modifier = Modifier.height(12.dp))
             }
         }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        PremiumSectionBanner(
+            title = "Showing last 7 days",
+            description = "Upgrade to Premium to access your complete session history with no time limit.",
+            onUpgradeClick = onNavigateToPremium
+        )
     }
 }
 
