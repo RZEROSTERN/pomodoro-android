@@ -27,6 +27,7 @@ import androidx.compose.material.icons.filled.Label
 import androidx.compose.material.icons.filled.NotificationsActive
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.Task
+import androidx.compose.material.icons.filled.Watch
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -65,6 +66,7 @@ private val premiumFeatures = listOf(
     PremiumFeature(Icons.Default.NotificationsActive,"Advanced Notifications", "Daily reminders, goal alerts, and motivational tips"),
     PremiumFeature(Icons.Default.FileDownload,       "Export & Import Data",   "Backup and restore your data in CSV or JSON format"),
     PremiumFeature(Icons.Default.CloudSync,          "Cloud Sync",             "Keep all your devices in sync automatically"),
+    PremiumFeature(Icons.Default.Watch,              "WearOS App",             "Standalone timer, goal ring, and haptics right on your wrist"),
 )
 
 @Composable
